@@ -1,0 +1,94 @@
+extends layout
+
+block content
+    style.
+        div{
+            overflow: hidden;
+        }
+
+        div p{
+            float: left;
+            margin: 0px;
+            margin-left: 10px;
+            color: red;
+        }
+
+        div input{
+            float: left;
+        }
+
+    script.
+        function saveData() {
+            var constraints = {
+                fornavn: {
+                    presence: {
+                        message : "må være fylt ut."
+                    }
+                },
+                etternavn: {
+                    presence: {
+                        message : "må være fylt ut."
+                    }
+                },
+                adresse: {
+                    presence: {
+                        message: "må være fylt ut."
+                    }
+                },
+                epost: {
+                    presence: {
+                        message: "må være fylt ut."
+                    },
+                    email : {
+                        message :"er ikke riktig epostformat."
+                    }
+                },
+                postnr: {
+                    presence: {
+                        message: "må være fylt ut."
+                    },
+                    numericality: {
+                        onlyInteger: true,
+                        message : "må være et nummer."
+                    },
+                    length : {
+                        is : 4,
+                        message : "har feil lengde, må være 4."
+                    }
+                }
+            }
+
+            var formData = validate.collectFormValues(document.getElementById("form"));
+            var result = validate(formData, constraints);
+            Object.keys(result).forEach(function(item){
+                var feilmelding = result[item][0];
+                document.getElementById(item).innerHTML = feilmelding;
+            });
+            return false;
+        }
+
+
+    form(method="post" action="/" onsubmit="return saveData()" id="form")
+        h3 Fornavn
+        div
+            input(type="text" name="fornavn")
+            p(id="fornavn")
+        h3 Etternavn
+        div
+            input(type="text" name="etternavn")
+            p(id="etternavn")
+        h3 Adresse
+        div
+            input(type="text" name="adresse")
+            p(id="adresse")
+        h3 Epost
+        div
+            input(type="text" name="epost")
+            p(id="epost")
+        h3 Postnr
+        div
+            input(type="text" name="postnr")
+            p(id="postnr")
+        br
+        br
+        input(type="submit" value="Lagre")
